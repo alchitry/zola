@@ -70,7 +70,6 @@ fn opening_html(
 
 pub struct CodeBlock<'config> {
     highlighter: SyntaxHighlighter<'config>,
-    inline: bool,
     // fence options
     line_numbers: bool,
     line_number_start: usize,
@@ -107,7 +106,6 @@ impl<'config> CodeBlock<'config> {
         (
             Self {
                 highlighter,
-                inline,
                 line_numbers: fence.line_numbers,
                 line_number_start: fence.line_number_start,
                 highlight_lines: fence.highlight_lines,
