@@ -15,40 +15,48 @@ fn opening_html(
     pre_style: Option<String>,
     pre_class: Option<String>,
     line_numbers: bool,
+    inline: bool,
 ) -> String {
-    let mut html = String::from("<pre");
-    if line_numbers {
-        html.push_str(" data-linenos");
+    let mut html = String::from("");
+
+    if !inline {
+        html.push_str("<pre");
+
+        if line_numbers {
+            html.push_str(" data-linenos");
+        }
+        let mut classes = String::new();
+    
+        if let Some(lang) = language {
+            classes.push_str("language-");
+            classes.push_str(lang);
+            classes.push(' ');
+    
+            html.push_str(" data-lang=\"");
+            html.push_str(lang);
+            html.push('"');
+        }
+    
+        if let Some(styles) = pre_style {
+            html.push_str(" style=\"");
+            html.push_str(styles.as_str());
+            html.push('"');
+        }
+    
+        if let Some(c) = pre_class {
+            classes.push_str(&c);
+        }
+    
+        if !classes.is_empty() {
+            html.push_str(" class=\"");
+            html.push_str(&classes);
+            html.push('"');
+        }
+
+        html.push('>');
     }
-    let mut classes = String::new();
-
-    if let Some(lang) = language {
-        classes.push_str("language-");
-        classes.push_str(lang);
-        classes.push(' ');
-
-        html.push_str(" data-lang=\"");
-        html.push_str(lang);
-        html.push('"');
-    }
-
-    if let Some(styles) = pre_style {
-        html.push_str(" style=\"");
-        html.push_str(styles.as_str());
-        html.push('"');
-    }
-
-    if let Some(c) = pre_class {
-        classes.push_str(&c);
-    }
-
-    if !classes.is_empty() {
-        html.push_str(" class=\"");
-        html.push_str(&classes);
-        html.push('"');
-    }
-
-    html.push_str("><code");
+    
+    html.push_str("<code");
     if let Some(lang) = language {
         html.push_str(" class=\"language-");
         html.push_str(lang);
@@ -62,6 +70,7 @@ fn opening_html(
 
 pub struct CodeBlock<'config> {
     highlighter: SyntaxHighlighter<'config>,
+    inline: bool,
     // fence options
     line_numbers: bool,
     line_number_start: usize,
@@ -73,6 +82,7 @@ impl<'config> CodeBlock<'config> {
     pub fn new<'fence_info>(
         fence: FenceSettings<'fence_info>,
         config: &'config Config,
+        inline: bool,
         // path to the current file if there is one, to point where the error is
         path: Option<&'config str>,
     ) -> (Self, String) {
@@ -92,10 +102,12 @@ impl<'config> CodeBlock<'config> {
             highlighter.pre_style(),
             highlighter.pre_class(),
             fence.line_numbers,
+            inline,
         );
         (
             Self {
                 highlighter,
+                inline,
                 line_numbers: fence.line_numbers,
                 line_number_start: fence.line_number_start,
                 highlight_lines: fence.highlight_lines,

@@ -27,6 +27,8 @@ pub struct ThemeCss {
 pub struct Markdown {
     /// Whether to highlight all code blocks found in markdown files. Defaults to false
     pub highlight_code: bool,
+    /// Language to use to highlight inline code. Defaults to none
+    pub highlight_inline_lang: Option<String>,
     /// Which themes to use for code highlighting. See Readme for supported themes
     /// Defaults to "base16-ocean-dark"
     pub highlight_theme: String,
@@ -194,6 +196,7 @@ impl Default for Markdown {
     fn default() -> Markdown {
         Markdown {
             highlight_code: false,
+            highlight_inline_lang: None,
             highlight_theme: DEFAULT_HIGHLIGHT_THEME.to_owned(),
             highlight_themes_css: Vec::new(),
             render_emoji: false,

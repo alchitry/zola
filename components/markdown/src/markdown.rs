@@ -366,12 +366,24 @@ pub fn markdown_to_html(
                         render_shortcodes!(true, text, range);
                     }
                 }
+                Event::Code(ref text) => {
+                    if let Some(lang) = &context.config.markdown.highlight_inline_lang {
+                        let fence = FenceSettings::new(lang);
+                        let (mut block, begin) = CodeBlock::new(fence, context.config, true, path);
+                        events.push(Event::Html(begin.into()));
+                        let html = block.highlight(&text);
+                        events.push(Event::Html(html.into()));
+                        events.push(Event::Html("</code>".into()));
+                    } else {
+                        events.push(event);
+                    }
+                }
                 Event::Start(Tag::CodeBlock(ref kind)) => {
                     let fence = match kind {
                         cmark::CodeBlockKind::Fenced(fence_info) => FenceSettings::new(fence_info),
                         _ => FenceSettings::new(""),
                     };
-                    let (block, begin) = CodeBlock::new(fence, context.config, path);
+                    let (block, begin) = CodeBlock::new(fence, context.config, false, path);
                     code_block = Some(block);
                     events.push(Event::Html(begin.into()));
                 }
