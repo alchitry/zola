@@ -367,7 +367,7 @@ pub fn markdown_to_html(
                     }
                 }
                 Event::Code(ref text) => {
-                    if let Some(lang) = &context.config.markdown.highlight_inline_lang {
+                    if let Some(lang) = &context.inline_lang {
                         let fence = FenceSettings::new(lang);
                         let (mut block, begin) = CodeBlock::new(fence, context.config, true, path);
                         events.push(Event::Html(begin.into()));
@@ -544,7 +544,7 @@ pub fn markdown_to_html(
                     c,
                     &None,
                 )
-                .context("Failed to render anchor link template")?;
+                    .context("Failed to render anchor link template")?;
                 if context.insert_anchor != InsertAnchor::Heading {
                     anchors_to_insert.push((anchor_idx, Event::Html(anchor_link.into())));
                 } else if let Some(captures) = A_HTML_TAG.captures(&anchor_link) {
@@ -589,8 +589,8 @@ pub fn markdown_to_html(
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
 
+    #[test]
     fn insert_many_works() {
         let mut v = vec![1, 2, 3, 4, 5];
         insert_many(&mut v, vec![(0, 0), (2, -1), (5, 6)]);

@@ -18,6 +18,7 @@ pub struct RenderContext<'a> {
     pub insert_anchor: InsertAnchor,
     pub lang: &'a str,
     pub shortcode_definitions: Cow<'a, HashMap<String, ShortcodeDefinition>>,
+    pub inline_lang: Option<String>,
 }
 
 impl<'a> RenderContext<'a> {
@@ -28,6 +29,7 @@ impl<'a> RenderContext<'a> {
         current_page_permalink: &'a str,
         permalinks: &'a HashMap<String, String>,
         insert_anchor: InsertAnchor,
+        inline_lang: Option<String>,
     ) -> RenderContext<'a> {
         let mut tera_context = Context::new();
         tera_context.insert("config", &config.serialize(lang));
@@ -43,6 +45,7 @@ impl<'a> RenderContext<'a> {
             config,
             lang,
             shortcode_definitions: Cow::Owned(HashMap::new()),
+            inline_lang,
         }
     }
 
@@ -71,6 +74,7 @@ impl<'a> RenderContext<'a> {
             config,
             lang: &config.default_language,
             shortcode_definitions: Cow::Owned(HashMap::new()),
+            inline_lang: None
         }
     }
 }

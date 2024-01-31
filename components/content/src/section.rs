@@ -158,6 +158,7 @@ impl Section {
             &self.permalink,
             permalinks,
             self.meta.insert_anchor_links,
+            None
         );
         context.set_shortcode_definitions(shortcode_definitions);
         context.set_current_page_path(&self.file.relative);

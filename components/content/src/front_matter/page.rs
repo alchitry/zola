@@ -64,6 +64,8 @@ pub struct PageFrontMatter {
     pub in_search_index: bool,
     /// Any extra parameter present in the front matter
     pub extra: Map<String, Value>,
+    /// Language to use when formatting inline code blocks
+    pub inline_language: Option<String>,
 }
 
 /// Parse a string for a datetime coming from one of the supported TOML format
@@ -159,6 +161,7 @@ impl Default for PageFrontMatter {
             aliases: Vec::new(),
             template: None,
             extra: Map::new(),
+            inline_language: None,
         }
     }
 }
