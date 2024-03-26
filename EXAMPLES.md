@@ -48,4 +48,6 @@
 | [giuseppedepalma](https://giuseppedepalma.com/)                    | https://github.com/giusdp/giuseppedepalma.com/           |
 | [Gijs Burghoorn](https://gburghoorn.com)                           | https://github.com/coastalwhite/gburghoorn.com/          |
 | [aadi.](https://aadi.net.in)                                       | https://github.com/2200g/zola/                           |
-
+| [Peter Todorov](https://peterprototypes.com/)                      | https://github.com/peterprototypes/peterprototypes.com   |
+| [failsafe.monster](https://failsafe.monster/)                      |                                                          |
+| [Joshua Gawley](https://www.joshuagawley.com/)                     | https://github.com/joshuagawley/joshuagawley.github.io   |

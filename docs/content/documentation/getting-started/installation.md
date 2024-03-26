@@ -49,7 +49,7 @@ $ sudo dpkg -i zola_<version>_amd64_debian_<debian_version>.deb
 
 ### Fedora
 
-On Fedora, Zola is avialable via [COPR](https://fedoraproject.org/wiki/Category:Copr).
+On Fedora, Zola is available via [COPR](https://fedoraproject.org/wiki/Category:Copr).
 
 ```sh
 $ sudo dnf copr enable fz0x1/zola
@@ -178,10 +178,29 @@ You can now browse http://localhost:8080.
 > port between 1024 and 9000 for live reload. The new docker command would be
 > `$ docker run -u "$(id -u):$(id -g)" -v $PWD:/app --workdir /app -p 8080:8080 -p 1024:1024 ghcr.io/getzola/zola:v0.17.1 serve --interface 0.0.0.0 --port 8080 --base-url localhost`
 
+#### Multi-stage build
+
+Since there is no shell in the Zola docker image, if you want to use it from inside a Dockerfile, you have to use the
+exec form of `RUN`, like:
+
+```Dockerfile
+FROM ghcr.io/getzola/zola:v0.17.1 as zola
+
+COPY . /project
+WORKDIR /project
+RUN ["zola", "build"]
+```
+
 
 ## Windows
 
-Zola is available on [Scoop](https://scoop.sh):
+Zola could be installed using official Winget command:
+
+```sh
+$ winget install getzola.zola
+```
+
+Also it is available on [Scoop](https://scoop.sh):
 
 ```sh
 $ scoop install zola
@@ -204,14 +223,14 @@ From a terminal, you can now run the following commands:
 ```sh
 $ git clone https://github.com/getzola/zola.git
 $ cd zola
-$ cargo install --path .
+$ cargo install --path . --locked
 $ zola --version
 ```
 
 If you encountered compilation errors like `error: failed to run custom build command for 'ring v0.16.20'`, you can try the command below instead:
 
 ```sh
-$ cargo build --release --no-default-features --features=native-tls
+$ cargo build --release --locked --no-default-features --features=native-tls
 ```
 
 The binary will be available in the `target/release` directory. You can move it in your `$PATH` to have the
